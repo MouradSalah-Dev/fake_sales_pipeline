@@ -1,0 +1,24 @@
+[2025-11-23T05:37:33.795+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-11-23T05:37:33.836+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: spark_streaming_processor.submit_spark_streaming manual__2025-11-23T05:05:37.890371+00:00 [queued]>
+[2025-11-23T05:37:33.846+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: spark_streaming_processor.submit_spark_streaming manual__2025-11-23T05:05:37.890371+00:00 [queued]>
+[2025-11-23T05:37:33.847+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 2
+[2025-11-23T05:37:33.862+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): submit_spark_streaming> on 2025-11-23 05:05:37.890371+00:00
+[2025-11-23T05:37:33.871+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'spark_streaming_processor', 'submit_spark_streaming', 'manual__2025-11-23T05:05:37.890371+00:00', '--job-id', '23', '--raw', '--subdir', 'DAGS_FOLDER/spark_streaming_processor_dag.py', '--cfg-path', '/tmp/tmpjv_i72af']
+[2025-11-23T05:37:33.872+0000] {standard_task_runner.py:105} INFO - Job 23: Subtask submit_spark_streaming
+[2025-11-23T05:37:33.870+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=134) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-11-23T05:37:33.875+0000] {standard_task_runner.py:72} INFO - Started process 135 to run task
+[2025-11-23T05:37:33.937+0000] {task_command.py:467} INFO - Running <TaskInstance: spark_streaming_processor.submit_spark_streaming manual__2025-11-23T05:05:37.890371+00:00 [running]> on host adf4d8c3820d
+[2025-11-23T05:37:34.070+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='spark_streaming_processor' AIRFLOW_CTX_TASK_ID='submit_spark_streaming' AIRFLOW_CTX_EXECUTION_DATE='2025-11-23T05:05:37.890371+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-11-23T05:05:37.890371+00:00'
+[2025-11-23T05:37:34.072+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-11-23T05:37:34.107+0000] {logging_mixin.py:190} INFO - 🚀 Submitting Spark streaming job: docker exec spark-master spark-submit --master spark://spark-master:7077 --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0,io.delta:delta-spark_2.12:3.2.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.driver.memory=1g --conf spark.executor.memory=1g /app/dags/spark_streaming_delta.py
+[2025-11-23T05:37:34.112+0000] {logging_mixin.py:190} INFO - ✅ Spark streaming job submitted with PID: 137
+[2025-11-23T05:37:34.113+0000] {logging_mixin.py:190} INFO - ⏳ Job will run for 60 seconds to process messages...
+[2025-11-23T05:38:39.110+0000] {logging_mixin.py:190} INFO - ✅ Spark streaming job completed
+[2025-11-23T05:38:39.118+0000] {python.py:240} INFO - Done. Returned value was: True
+[2025-11-23T05:38:39.165+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-11-23T05:38:39.167+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=spark_streaming_processor, task_id=submit_spark_streaming, run_id=manual__2025-11-23T05:05:37.890371+00:00, execution_date=20251123T050537, start_date=20251123T053733, end_date=20251123T053839
+[2025-11-23T05:38:39.240+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-11-23T05:38:39.261+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-11-23T05:38:39.264+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

@@ -1,0 +1,18 @@
+apiVersion: 1
+
+providers:
+  - name: 'default'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards
+      # Add a specific dashboard file to be provisioned
+      # This assumes the sales_streaming_dashboard.json is placed in the same directory
+      # as the provisioning yaml, or a subdirectory configured by the path option.
+      # For now, let's assume it's in the same directory.
+      files: 
+        - sales_streaming_dashboard.json

@@ -1,0 +1,27 @@
+[2025-11-23T04:36:55.715+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-11-23T04:36:55.732+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sales_streaming_pipeline.trigger_kafka_producer manual__2025-11-23T04:36:42.123323+00:00 [queued]>
+[2025-11-23T04:36:55.740+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sales_streaming_pipeline.trigger_kafka_producer manual__2025-11-23T04:36:42.123323+00:00 [queued]>
+[2025-11-23T04:36:55.741+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 2
+[2025-11-23T04:36:55.752+0000] {taskinstance.py:2890} INFO - Executing <Task(TriggerDagRunOperator): trigger_kafka_producer> on 2025-11-23 04:36:42.123323+00:00
+[2025-11-23T04:36:55.757+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=51) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-11-23T04:36:55.758+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'sales_streaming_pipeline', 'trigger_kafka_producer', 'manual__2025-11-23T04:36:42.123323+00:00', '--job-id', '5', '--raw', '--subdir', 'DAGS_FOLDER/master_orchestrator_dag.py', '--cfg-path', '/tmp/tmp6l37xapr']
+[2025-11-23T04:36:55.759+0000] {standard_task_runner.py:72} INFO - Started process 52 to run task
+[2025-11-23T04:36:55.760+0000] {standard_task_runner.py:105} INFO - Job 5: Subtask trigger_kafka_producer
+[2025-11-23T04:36:55.801+0000] {task_command.py:467} INFO - Running <TaskInstance: sales_streaming_pipeline.trigger_kafka_producer manual__2025-11-23T04:36:42.123323+00:00 [running]> on host adf4d8c3820d
+[2025-11-23T04:36:55.857+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='sales_streaming_pipeline' AIRFLOW_CTX_TASK_ID='trigger_kafka_producer' AIRFLOW_CTX_EXECUTION_DATE='2025-11-23T04:36:42.123323+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-11-23T04:36:42.123323+00:00'
+[2025-11-23T04:36:55.858+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-11-23T04:36:55.924+0000] {trigger_dagrun.py:257} INFO - Waiting for kafka_sales_producer on 2025-11-23 04:36:55.867784+00:00 to become allowed state ['success'] ...
+[2025-11-23T04:37:55.930+0000] {trigger_dagrun.py:257} INFO - Waiting for kafka_sales_producer on 2025-11-23 04:36:55.867784+00:00 to become allowed state ['success'] ...
+[2025-11-23T04:38:55.939+0000] {trigger_dagrun.py:257} INFO - Waiting for kafka_sales_producer on 2025-11-23 04:36:55.867784+00:00 to become allowed state ['success'] ...
+[2025-11-23T04:39:55.949+0000] {trigger_dagrun.py:257} INFO - Waiting for kafka_sales_producer on 2025-11-23 04:36:55.867784+00:00 to become allowed state ['success'] ...
+[2025-11-23T04:40:55.954+0000] {trigger_dagrun.py:257} INFO - Waiting for kafka_sales_producer on 2025-11-23 04:36:55.867784+00:00 to become allowed state ['success'] ...
+[2025-11-23T04:41:55.962+0000] {trigger_dagrun.py:257} INFO - Waiting for kafka_sales_producer on 2025-11-23 04:36:55.867784+00:00 to become allowed state ['success'] ...
+[2025-11-23T04:42:55.968+0000] {trigger_dagrun.py:257} INFO - Waiting for kafka_sales_producer on 2025-11-23 04:36:55.867784+00:00 to become allowed state ['success'] ...
+[2025-11-23T04:43:55.981+0000] {trigger_dagrun.py:271} INFO - kafka_sales_producer finished with allowed state success
+[2025-11-23T04:43:55.991+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-11-23T04:43:55.992+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=sales_streaming_pipeline, task_id=trigger_kafka_producer, run_id=manual__2025-11-23T04:36:42.123323+00:00, execution_date=20251123T043642, start_date=20251123T043655, end_date=20251123T044355
+[2025-11-23T04:43:56.057+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-11-23T04:43:56.079+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-11-23T04:43:56.083+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

@@ -1,0 +1,22 @@
+---
+lowercaseOutputName: true
+rules:
+  - pattern: "kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>Value"
+    name: kafka_server_$1_$2
+    labels:
+      clientId: "$3"
+      topic: "$4"
+      partition: "$5"
+  - pattern: "kafka.server<type=(.+), name=(.+), clientId=(.+), brokerHost=(.+), brokerPort=(.+)><>Value"
+    name: kafka_server_$1_$2
+    labels:
+      clientId: "$3"
+      broker: "$4:$5"
+  - pattern: "kafka.consumer<type=(.+), name=(.+), clientId=(.+)><>Value"
+    name: kafka_consumer_$1_$2
+    labels:
+      clientId: "$3"
+  - pattern: "kafka.producer<type=(.+), name=(.+), clientId=(.+)><>Value"
+    name: kafka_producer_$1_$2
+    labels:
+      clientId: "$3"

@@ -1,0 +1,30 @@
+[2025-11-23T06:31:42.569+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-11-23T06:31:42.592+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: spark_streaming_processor.submit_spark_streaming manual__2025-11-23T06:31:39.959217+00:00 [queued]>
+[2025-11-23T06:31:42.602+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: spark_streaming_processor.submit_spark_streaming manual__2025-11-23T06:31:39.959217+00:00 [queued]>
+[2025-11-23T06:31:42.602+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 2
+[2025-11-23T06:31:42.616+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): submit_spark_streaming> on 2025-11-23 06:31:39.959217+00:00
+[2025-11-23T06:31:42.622+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=61) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-11-23T06:31:42.623+0000] {standard_task_runner.py:72} INFO - Started process 62 to run task
+[2025-11-23T06:31:42.623+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'spark_streaming_processor', 'submit_spark_streaming', 'manual__2025-11-23T06:31:39.959217+00:00', '--job-id', '31', '--raw', '--subdir', 'DAGS_FOLDER/spark_streaming_processor_dag.py', '--cfg-path', '/tmp/tmp7wno_dce']
+[2025-11-23T06:31:42.624+0000] {standard_task_runner.py:105} INFO - Job 31: Subtask submit_spark_streaming
+[2025-11-23T06:31:42.662+0000] {task_command.py:467} INFO - Running <TaskInstance: spark_streaming_processor.submit_spark_streaming manual__2025-11-23T06:31:39.959217+00:00 [running]> on host e6f37c555da0
+[2025-11-23T06:31:42.735+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='spark_streaming_processor' AIRFLOW_CTX_TASK_ID='submit_spark_streaming' AIRFLOW_CTX_EXECUTION_DATE='2025-11-23T06:31:39.959217+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-11-23T06:31:39.959217+00:00'
+[2025-11-23T06:31:42.736+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-11-23T06:31:42.749+0000] {logging_mixin.py:190} INFO - 🚀 Submitting Spark streaming job: docker exec spark-master spark-submit --master spark://spark-master:7077 --packages io.delta:delta-spark_2.12:3.2.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.driver.memory=1g --conf spark.executor.memory=1g /app/dags/spark_streaming_delta.py
+[2025-11-23T06:31:42.753+0000] {logging_mixin.py:190} INFO - ✅ Spark streaming job submitted with PID: 64
+[2025-11-23T06:31:42.754+0000] {logging_mixin.py:190} INFO - ⏳ Job will run for 60 seconds to process messages...
+[2025-11-23T06:31:42.755+0000] {logging_mixin.py:190} INFO - 
+--- SPARK OUTPUT START ---
+[2025-11-23T06:31:42.859+0000] {logging_mixin.py:190} INFO - Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+[2025-11-23T06:32:42.751+0000] {logging_mixin.py:190} INFO - 
+--- TERMINATING SPARK JOB ---
+[2025-11-23T06:32:47.753+0000] {logging_mixin.py:190} INFO - --- SPARK OUTPUT END ---
+[2025-11-23T06:32:47.753+0000] {logging_mixin.py:190} INFO - ✅ Spark streaming job completed
+[2025-11-23T06:32:47.755+0000] {python.py:240} INFO - Done. Returned value was: True
+[2025-11-23T06:32:47.778+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-11-23T06:32:47.779+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=spark_streaming_processor, task_id=submit_spark_streaming, run_id=manual__2025-11-23T06:31:39.959217+00:00, execution_date=20251123T063139, start_date=20251123T063142, end_date=20251123T063247
+[2025-11-23T06:32:47.838+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-11-23T06:32:47.870+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-11-23T06:32:47.874+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

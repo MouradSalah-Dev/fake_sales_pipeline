@@ -1,0 +1,233 @@
+[2025-12-14T00:53:37.142+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-14T00:53:37.198+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: unified_sales_pipeline.run_bronze_processing manual__2025-12-14T00:50:52.179096+00:00 [queued]>
+[2025-12-14T00:53:37.227+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: unified_sales_pipeline.run_bronze_processing manual__2025-12-14T00:50:52.179096+00:00 [queued]>
+[2025-12-14T00:53:37.229+0000] {taskinstance.py:2867} INFO - Starting attempt 2 of 2
+[2025-12-14T00:53:37.259+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): run_bronze_processing> on 2025-12-14 00:50:52.179096+00:00
+[2025-12-14T00:53:37.274+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=151) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-14T00:53:37.278+0000] {standard_task_runner.py:72} INFO - Started process 152 to run task
+[2025-12-14T00:53:37.278+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'unified_sales_pipeline', 'run_bronze_processing', 'manual__2025-12-14T00:50:52.179096+00:00', '--job-id', '17', '--raw', '--subdir', 'DAGS_FOLDER/unified_sales_pipeline_dag.py', '--cfg-path', '/tmp/tmp_qot7rj9']
+[2025-12-14T00:53:37.280+0000] {standard_task_runner.py:105} INFO - Job 17: Subtask run_bronze_processing
+[2025-12-14T00:53:37.395+0000] {task_command.py:467} INFO - Running <TaskInstance: unified_sales_pipeline.run_bronze_processing manual__2025-12-14T00:50:52.179096+00:00 [running]> on host 97f80993d952
+[2025-12-14T00:53:37.551+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='unified_sales_pipeline' AIRFLOW_CTX_TASK_ID='run_bronze_processing' AIRFLOW_CTX_EXECUTION_DATE='2025-12-14T00:50:52.179096+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-14T00:50:52.179096+00:00'
+[2025-12-14T00:53:37.553+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-12-14T00:53:37.582+0000] {logging_mixin.py:190} INFO - 🚀 Submitting Bronze Spark job: docker exec spark-master spark-submit --master spark://spark-master:7077 --packages io.delta:delta-spark_2.12:3.2.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.driver.memory=1g --conf spark.executor.memory=1g /app/dags/spark_streaming_delta.py
+[2025-12-14T00:53:48.898+0000] {logging_mixin.py:190} INFO - 🔍 Return code: 1
+[2025-12-14T00:53:48.900+0000] {logging_mixin.py:190} INFO - STDOUT (first 1000 chars):
+:: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+25/12/14 00:53:41 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/12/14 00:53:41 WARN DependencyUtils: Local jar /opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.5.jar does not exist, skipping.
+25/12/14 00:53:41 WARN DependencyUtils: Local jar /opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.5.jar does not exist, skipping.
+25/12/14 00:53:41 WARN DependencyUtils: Local jar /opt/spark/jars/kafka-clients-3.4.1.jar does not exist, skipping.
+25/12/14 00:53:41 WARN DependencyUtils: Local jar /opt/spark/jars/commons-pool2-2.11.1.jar does not exist, skipping.
+25/12/14 00:53:42 INFO SparkContext: Running Spark version 3.5.5
+25/12/14 00:53:42 INFO SparkContext: OS info Linux, 5.15.167.4-microsoft-standard-WSL2, amd64
+25/12/14 00:53:42 INFO SparkContext: Java version 17.0.14
+25/12/14 00:53:42 INFO Res
+[2025-12-14T00:53:48.901+0000] {logging_mixin.py:190} INFO - STDERR (first 1000 chars):
+Ivy Default Cache set to: /home/spark/.ivy2/cache
+The jars for the packages stored in: /home/spark/.ivy2/jars
+io.delta#delta-spark_2.12 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353;1.0
+	confs: [default]
+	found io.delta#delta-spark_2.12;3.2.0 in central
+	found io.delta#delta-storage;3.2.0 in central
+	found org.antlr#antlr4-runtime;4.9.3 in central
+:: resolution report :: resolve 336ms :: artifacts dl 7ms
+	:: modules in use:
+	io.delta#delta-spark_2.12;3.2.0 from central in [default]
+	io.delta#delta-storage;3.2.0 from central in [default]
+	org.antlr#antlr4-runtime;4.9.3 from central in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   3   |   0   
+[2025-12-14T00:53:48.902+0000] {logging_mixin.py:190} INFO - ❌ Bronze Spark job failed with real error
+[2025-12-14T00:53:48.903+0000] {logging_mixin.py:190} INFO - ❌ Error submitting Bronze Spark job: Bronze Spark job failed:
+Ivy Default Cache set to: /home/spark/.ivy2/cache
+The jars for the packages stored in: /home/spark/.ivy2/jars
+io.delta#delta-spark_2.12 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353;1.0
+	confs: [default]
+	found io.delta#delta-spark_2.12;3.2.0 in central
+	found io.delta#delta-storage;3.2.0 in central
+	found org.antlr#antlr4-runtime;4.9.3 in central
+:: resolution report :: resolve 336ms :: artifacts dl 7ms
+	:: modules in use:
+	io.delta#delta-spark_2.12;3.2.0 from central in [default]
+	io.delta#delta-storage;3.2.0 from central in [default]
+	org.antlr#antlr4-runtime;4.9.3 from central in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   3   |   0   |   0   |   0   ||   3   |   0   |
+	---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353
+	confs: [default]
+	0 artifacts copied, 3 already retrieved (0kB/11ms)
+:: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+25/12/14 00:53:41 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java c
+[2025-12-14T00:53:48.905+0000] {taskinstance.py:3313} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 768, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/unified_sales_pipeline_dag.py", line 167, in run_spark_bronze_processing
+    raise Exception(f"Bronze Spark job failed:\n{error_snippet}")
+Exception: Bronze Spark job failed:
+Ivy Default Cache set to: /home/spark/.ivy2/cache
+The jars for the packages stored in: /home/spark/.ivy2/jars
+io.delta#delta-spark_2.12 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353;1.0
+	confs: [default]
+	found io.delta#delta-spark_2.12;3.2.0 in central
+	found io.delta#delta-storage;3.2.0 in central
+	found org.antlr#antlr4-runtime;4.9.3 in central
+:: resolution report :: resolve 336ms :: artifacts dl 7ms
+	:: modules in use:
+	io.delta#delta-spark_2.12;3.2.0 from central in [default]
+	io.delta#delta-storage;3.2.0 from central in [default]
+	org.antlr#antlr4-runtime;4.9.3 from central in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   3   |   0   |   0   |   0   ||   3   |   0   |
+	---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353
+	confs: [default]
+	0 artifacts copied, 3 already retrieved (0kB/11ms)
+:: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+25/12/14 00:53:41 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java c
+[2025-12-14T00:53:48.930+0000] {taskinstance.py:1226} INFO - Marking task as FAILED. dag_id=unified_sales_pipeline, task_id=run_bronze_processing, run_id=manual__2025-12-14T00:50:52.179096+00:00, execution_date=20251214T005052, start_date=20251214T005337, end_date=20251214T005348
+[2025-12-14T00:53:48.976+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-12-14T00:53:48.978+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 17 for task run_bronze_processing (Bronze Spark job failed:
+Ivy Default Cache set to: /home/spark/.ivy2/cache
+The jars for the packages stored in: /home/spark/.ivy2/jars
+io.delta#delta-spark_2.12 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353;1.0
+	confs: [default]
+	found io.delta#delta-spark_2.12;3.2.0 in central
+	found io.delta#delta-storage;3.2.0 in central
+	found org.antlr#antlr4-runtime;4.9.3 in central
+:: resolution report :: resolve 336ms :: artifacts dl 7ms
+	:: modules in use:
+	io.delta#delta-spark_2.12;3.2.0 from central in [default]
+	io.delta#delta-storage;3.2.0 from central in [default]
+	org.antlr#antlr4-runtime;4.9.3 from central in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   3   |   0   |   0   |   0   ||   3   |   0   |
+	---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353
+	confs: [default]
+	0 artifacts copied, 3 already retrieved (0kB/11ms)
+:: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+25/12/14 00:53:41 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java c; 152)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3006, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 274, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3161, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3185, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 768, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/unified_sales_pipeline_dag.py", line 167, in run_spark_bronze_processing
+    raise Exception(f"Bronze Spark job failed:\n{error_snippet}")
+Exception: Bronze Spark job failed:
+Ivy Default Cache set to: /home/spark/.ivy2/cache
+The jars for the packages stored in: /home/spark/.ivy2/jars
+io.delta#delta-spark_2.12 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353;1.0
+	confs: [default]
+	found io.delta#delta-spark_2.12;3.2.0 in central
+	found io.delta#delta-storage;3.2.0 in central
+	found org.antlr#antlr4-runtime;4.9.3 in central
+:: resolution report :: resolve 336ms :: artifacts dl 7ms
+	:: modules in use:
+	io.delta#delta-spark_2.12;3.2.0 from central in [default]
+	io.delta#delta-storage;3.2.0 from central in [default]
+	org.antlr#antlr4-runtime;4.9.3 from central in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   3   |   0   |   0   |   0   ||   3   |   0   |
+	---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-7a6ced1c-f467-4ea2-8a1b-dc04178ac353
+	confs: [default]
+	0 artifacts copied, 3 already retrieved (0kB/11ms)
+:: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+25/12/14 00:53:41 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java c
+[2025-12-14T00:53:49.026+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-12-14T00:53:49.070+0000] {taskinstance.py:3901} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-12-14T00:53:49.077+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
