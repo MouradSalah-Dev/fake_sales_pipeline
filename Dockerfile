@@ -118,14 +118,58 @@ USER root
 RUN echo '#!/bin/bash' > /entrypoint.sh && \
     echo 'set -e' >> /entrypoint.sh && \
     echo '' >> /entrypoint.sh && \
-    echo '# Fix permissions for delta directories' >> /entrypoint.sh && \
-    echo 'echo "Fixing permissions for /tmp/delta..."' >> /entrypoint.sh && \
-    echo 'sudo chmod -R 777 /tmp/delta 2>/dev/null || true' >> /entrypoint.sh && \
-    echo 'sudo chown -R 1001:0 /tmp/delta 2>/dev/null || true' >> /entrypoint.sh && \
+    echo '# ========== PERMISSION FIXES ==========' >> /entrypoint.sh && \
+    echo 'echo "=== STARTING PERMISSION FIXES ==="' >> /entrypoint.sh && \
     echo '' >> /entrypoint.sh && \
-    echo '# Ensure subdirectories exist' >> /entrypoint.sh && \
-    echo 'mkdir -p /tmp/delta/bronze /tmp/delta/silver /tmp/delta/checkpoints' >> /entrypoint.sh && \
-    echo 'sudo chmod -R 777 /tmp/delta/bronze /tmp/delta/silver /tmp/delta/checkpoints 2>/dev/null || true' >> /entrypoint.sh && \
+    echo '# 1. Ensure directories exist with 777' >> /entrypoint.sh && \
+    echo 'mkdir -p /tmp/delta /tmp/delta/bronze /tmp/delta/silver /tmp/delta/checkpoints /tmp/spark-warehouse /tmp/spark-events' >> /entrypoint.sh && \
+    echo '' >> /entrypoint.sh && \
+    echo '# 2. Set 777 on ALL DELTA FILES AND DIRECTORIES (aggressive)' >> /entrypoint.sh && \
+    echo 'echo "Setting permissions on /tmp/delta..."' >> /entrypoint.sh && \
+    echo 'find /tmp/delta -type d -exec chmod 777 {} \; 2>/dev/null || true' >> /entrypoint.sh && \
+    echo 'find /tmp/delta -type f -exec chmod 666 {} \; 2>/dev/null || true' >> /entrypoint.sh && \
+    echo 'chmod -R 777 /tmp/delta 2>/dev/null || true' >> /entrypoint.sh && \
+    echo '' >> /entrypoint.sh && \
+    echo '# 3. Set ownership recursively' >> /entrypoint.sh && \
+    echo 'chown -R 1001:0 /tmp/delta 2>/dev/null || true' >> /entrypoint.sh && \
+    echo '' >> /entrypoint.sh && \
+    echo '# 4. Fix Spark directories' >> /entrypoint.sh && \
+    echo 'echo "Setting permissions on Spark directories..."' >> /entrypoint.sh && \
+    echo 'find /tmp/spark-warehouse -type d -exec chmod 777 {} \; 2>/dev/null || true' >> /entrypoint.sh && \
+    echo 'find /tmp/spark-warehouse -type f -exec chmod 666 {} \; 2>/dev/null || true' >> /entrypoint.sh && \
+    echo 'find /tmp/spark-events -type d -exec chmod 777 {} \; 2>/dev/null || true' >> /entrypoint.sh && \
+    echo 'find /tmp/spark-events -type f -exec chmod 666 {} \; 2>/dev/null || true' >> /entrypoint.sh && \
+    echo 'chown -R 1001:0 /tmp/spark-warehouse /tmp/spark-events 2>/dev/null || true' >> /entrypoint.sh && \
+    echo '' >> /entrypoint.sh && \
+    echo '# 5. Fix /tmp directory in general' >> /entrypoint.sh && \
+    echo 'echo "Fixing /tmp permissions..."' >> /entrypoint.sh && \
+    echo 'chmod 777 /tmp 2>/dev/null || true' >> /entrypoint.sh && \
+    echo 'chown 1001:0 /tmp 2>/dev/null || true' >> /entrypoint.sh && \
+    echo '' >> /entrypoint.sh && \
+    echo '# 6. Clean up Spark and Hadoop temp files' >> /entrypoint.sh && \
+    echo 'echo "Cleaning up old Spark temp files..."' >> /entrypoint.sh && \
+    echo 'rm -rf /tmp/spark-* /tmp/hadoop-* /tmp/blockmgr-* 2>/dev/null || true' >> /entrypoint.sh && \
+    echo 'rm -rf /tmp/*.parquet /tmp/*.snappy /tmp/*.crc 2>/dev/null || true' >> /entrypoint.sh && \
+    echo '' >> /entrypoint.sh && \
+    echo '# 7. Force recreate Delta table if metadata is corrupted' >> /entrypoint.sh && \
+    echo 'echo "Checking for corrupted Delta tables..."' >> /entrypoint.sh && \
+    echo 'for dir in /tmp/delta/bronze/ventes_stream /tmp/delta/silver/ventes_clean /tmp/delta/silver/ventes_aggreges /tmp/delta/silver/top_produits; do' >> /entrypoint.sh && \
+    echo '    if [ -d "$dir/_delta_log" ]; then' >> /entrypoint.sh && \
+    echo '        echo "Found Delta table at $dir"' >> /entrypoint.sh && \
+    echo '        # Check if _delta_log has valid JSON files' >> /entrypoint.sh && \
+    echo '        json_count=$(find "$dir/_delta_log" -name "*.json" 2>/dev/null | wc -l)' >> /entrypoint.sh && \
+    echo '        if [ "$json_count" -eq "0" ]; then' >> /entrypoint.sh && \
+    echo '            echo "WARNING: No JSON files in _delta_log, table might be corrupted"' >> /entrypoint.sh && \
+    echo '            echo "Cleaning up possibly corrupted table: $dir"' >> /entrypoint.sh && \
+    echo '            rm -rf "$dir" 2>/dev/null || true' >> /entrypoint.sh && \
+    echo '            mkdir -p "$dir"' >> /entrypoint.sh && \
+    echo '            chmod 777 "$dir"' >> /entrypoint.sh && \
+    echo '            chown 1001:0 "$dir"' >> /entrypoint.sh && \
+    echo '        fi' >> /entrypoint.sh && \
+    echo '    fi' >> /entrypoint.sh && \
+    echo 'done' >> /entrypoint.sh && \
+    echo '' >> /entrypoint.sh && \
+    echo 'echo "=== PERMISSION FIXES COMPLETED ==="' >> /entrypoint.sh && \
     echo '' >> /entrypoint.sh && \
     echo 'exec "$@"' >> /entrypoint.sh && \
     chmod +x /entrypoint.sh

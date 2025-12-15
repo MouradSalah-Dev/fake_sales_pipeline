@@ -1,0 +1,191 @@
+[2025-12-14T07:54:24.553+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-14T07:54:24.575+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: unified_sales_pipeline.run_silver_processing manual__2025-12-14T07:53:42.113803+00:00 [queued]>
+[2025-12-14T07:54:24.588+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: unified_sales_pipeline.run_silver_processing manual__2025-12-14T07:53:42.113803+00:00 [queued]>
+[2025-12-14T07:54:24.589+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 2
+[2025-12-14T07:54:24.603+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): run_silver_processing> on 2025-12-14 07:53:42.113803+00:00
+[2025-12-14T07:54:24.610+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=444) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-14T07:54:24.612+0000] {standard_task_runner.py:72} INFO - Started process 445 to run task
+[2025-12-14T07:54:24.612+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'unified_sales_pipeline', 'run_silver_processing', 'manual__2025-12-14T07:53:42.113803+00:00', '--job-id', '86', '--raw', '--subdir', 'DAGS_FOLDER/unified_sales_pipeline_dag.py', '--cfg-path', '/tmp/tmp5ipvcxns']
+[2025-12-14T07:54:24.614+0000] {standard_task_runner.py:105} INFO - Job 86: Subtask run_silver_processing
+[2025-12-14T07:54:24.655+0000] {task_command.py:467} INFO - Running <TaskInstance: unified_sales_pipeline.run_silver_processing manual__2025-12-14T07:53:42.113803+00:00 [running]> on host 8010d11e18c5
+[2025-12-14T07:54:24.733+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='unified_sales_pipeline' AIRFLOW_CTX_TASK_ID='run_silver_processing' AIRFLOW_CTX_EXECUTION_DATE='2025-12-14T07:53:42.113803+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-14T07:53:42.113803+00:00'
+[2025-12-14T07:54:24.734+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-12-14T07:54:24.746+0000] {logging_mixin.py:190} INFO - 🚀 Submitting Silver Spark job: docker exec spark-master spark-submit --master spark://spark-master:7077 --jars /opt/spark/jars/delta-spark_2.12-3.2.0.jar,/opt/spark/jars/delta-storage-3.2.0.jar,/opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar,/opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar,/opt/spark/jars/kafka-clients-3.4.1.jar,/opt/spark/jars/commons-pool2-2.11.1.jar --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.driver.memory=1g --conf spark.executor.memory=1g /app/dags/bronze_to_silver.py
+[2025-12-14T07:55:03.263+0000] {logging_mixin.py:190} INFO - ✅ Silver Spark job completed successfully
+[2025-12-14T07:55:03.265+0000] {logging_mixin.py:190} INFO - STDOUT: 25/12/14 07:54:26 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/12/14 07:54:27 INFO SparkContext: Running Spark version 3.5.5
+25/12/14 07:54:27 INFO SparkContext: OS info Linux, 5.15.167.4-microsoft-standard-WSL2, amd64
+25/12/14 07:54:27 INFO SparkContext: Java version 17.0.14
+25/12/14 07:54:27 INFO ResourceUtils: ==============================================================
+25/12/14 07:54:27 INFO ResourceUtils: No custom resources configured for spark.driver.
+25/12/14 07:54:27 INFO ResourceUtils: ==============================================================
+25/12/14 07:54:27 INFO SparkContext: Submitted application: BronzeToSilverTransformation
+25/12/14 07:54:27 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+25/12/14 07:54:27 INFO ResourceProfile: Limiting resource is cpu
+25/12/14 07:54:27 INFO ResourceProfileManager: Added ResourceProfile id: 0
+25/12/14 07:54:27 INFO SecurityManager: Changing view acls to: spark
+25/12/14 07:54:27 INFO SecurityManager: Changing modify acls to: spark
+25/12/14 07:54:27 INFO SecurityManager: Changing view acls groups to: 
+25/12/14 07:54:27 INFO SecurityManager: Changing modify acls groups to: 
+25/12/14 07:54:27 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+25/12/14 07:54:28 INFO Utils: Successfully started service 'sparkDriver' on port 43451.
+25/12/14 07:54:28 INFO SparkEnv: Registering MapOutputTracker
+25/12/14 07:54:28 INFO SparkEnv: Registering BlockManagerMaster
+25/12/14 07:54:28 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+25/12/14 07:54:28 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+25/12/14 07:54:28 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+25/12/14 07:54:28 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-e71ae345-635b-486e-8214-b413a6229d3d
+25/12/14 07:54:28 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+25/12/14 07:54:28 INFO SparkEnv: Registering OutputCommitCoordinator
+25/12/14 07:54:28 INFO log: Logging initialized @3396ms to org.sparkproject.jetty.util.log.Slf4jLog
+25/12/14 07:54:28 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+25/12/14 07:54:28 INFO Server: jetty-9.4.56.v20240826; built: 2024-08-26T17:15:05.868Z; git: ec6782ff5ead824dabdcf47fa98f90a4aedff401; jvm 17.0.14+7
+25/12/14 07:54:28 INFO Server: Started @3588ms
+25/12/14 07:54:28 INFO AbstractConnector: Started ServerConnector@2e9ab71b{HTTP/1.1, (http/1.1)}{0.0.0.0:4040}
+25/12/14 07:54:28 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+25/12/14 07:54:28 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@45c3a150{/,null,AVAILABLE,@Spark}
+25/12/14 07:54:28 INFO SparkContext: Added JAR file:///opt/spark/jars/delta-spark_2.12-3.2.0.jar at spark://spark-master:43451/jars/delta-spark_2.12-3.2.0.jar with timestamp 1765698867852
+25/12/14 07:54:28 INFO SparkContext: Added JAR file:///opt/spark/jars/delta-storage-3.2.0.jar at spark://spark-master:43451/jars/delta-storage-3.2.0.jar with timestamp 1765698867852
+25/12/14 07:54:28 INFO SparkContext: Added JAR file:///opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar at spark://spark-master:43451/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar with timestamp 1765698867852
+25/12/14 07:54:28 INFO SparkContext: Added JAR file:///opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar at spark://spark-master:43451/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar with timestamp 1765698867852
+25/12/14 07:54:28 INFO SparkContext: Added JAR file:///opt/spark/jars/kafka-clients-3.4.1.jar at spark://spark-master:43451/jars/kafka-clients-3.4.1.jar with timestamp 1765698867852
+25/12/14 07:54:28 INFO SparkContext: Added JAR file:///opt/spark/jars/commons-pool2-2.11.1.jar at spark://spark-master:43451/jars/commons-pool2-2.11.1.jar with timestamp 1765698867852
+25/12/14 07:54:29 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+25/12/14 07:54:29 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.6:7077 after 30 ms (0 ms spent in bootstraps)
+25/12/14 07:54:29 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20251214075429-0003
+25/12/14 07:54:29 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20251214075429-0003/0 on worker-20251214072954-172.18.0.11-8881 (172.18.0.11:8881) with 2 core(s)
+25/12/14 07:54:29 INFO StandaloneSchedulerBackend: Granted executor ID app-20251214075429-0003/0 on hostPort 172.18.0.11:8881 with 2 core(s), 1024.0 MiB RAM
+25/12/14 07:54:29 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 45183.
+25/12/14 07:54:29 INFO NettyBlockTransferService: Server created on spark-master:45183
+25/12/14 07:54:29 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+25/12/14 07:54:29 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 45183, None)
+25/12/14 07:54:29 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:45183 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 45183, None)
+25/12/14 07:54:29 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 45183, None)
+25/12/14 07:54:29 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 45183, None)
+25/12/14 07:54:29 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20251214075429-0003/0 is now RUNNING
+25/12/14 07:54:29 INFO ContextHandler: Stopped o.s.j.s.ServletContextHandler@45c3a150{/,null,STOPPED,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@420c1621{/jobs,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@7df3a4e9{/jobs/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@6996068a{/jobs/job,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@36087e3d{/jobs/job/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@77b43135{/stages,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@6dd757a4{/stages/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@76251c62{/stages/stage,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@496380a6{/stages/stage/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@1ceb8b0f{/stages/pool,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@7639a015{/stages/pool/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@6e28f0eb{/storage,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@25c3b4fb{/storage/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@7fc30dd1{/storage/rdd,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@55fd0142{/storage/rdd/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@4c0eb15b{/environment,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@14235549{/environment/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@22b6bacd{/executors,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@488d7427{/executors/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@1e94c53f{/executors/threadDump,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@2c4510a5{/executors/threadDump/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@681d7f5{/executors/heapHistogram,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@5e5a2e05{/executors/heapHistogram/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@4a758153{/static,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@12571ab3{/,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@7127b27b{/api,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@134a6ed3{/jobs/job/kill,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@71dce9af{/stages/stage/kill,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO ContextHandler: Started o.s.j.s.ServletContextHandler@5ad261eb{/metrics/json,null,AVAILABLE,@Spark}
+25/12/14 07:54:29 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+================================================================================
+🚀 STARTING BRONZE TO SILVER TRANSFORMATION
+================================================================================
+📖 Reading from bronze: /tmp/delta/bronze/ventes_stream
+💾 Writing to silver: /tmp/delta/silver/ventes_clean
+
+📋 Loading data from Bronze layer...
+25/12/14 07:54:39 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+✅ Loaded 100 records from Bronze layer
+
+📋 Bronze data schema:
+root
+ |-- vente_id: integer (nullable = true)
+ |-- client_id: integer (nullable = true)
+ |-- produit_id: integer (nullable = true)
+ |-- timestamp: string (nullable = true)
+ |-- quantite: integer (nullable = true)
+ |-- montant: double (nullable = true)
+ |-- client_nom: string (nullable = true)
+ |-- produit_nom: string (nullable = true)
+ |-- categorie: string (nullable = true)
+ |-- pays: string (nullable = true)
+ |-- segment: string (nullable = true)
+ |-- kafka_timestamp: timestamp (nullable = true)
+ |-- partition: integer (nullable = true)
+ |-- offset: long (nullable = true)
+ |-- date_ingestion: timestamp (nullable = true)
+ |-- jour: date (nullable = true)
+
+
+📋 Sample of bronze data (first 5 rows):
++--------+-----------+-------------------+-------+------+
+|vente_id|client_nom |produit_nom        |montant|pays  |
++--------+-----------+-------------------+-------+------+
+|2       |John Smith |Ordinateur portable|899.99 |UK    |
+|5       |John Smith |Livre Data Science |59.97  |UK    |
+|8       |Jean Dupont|Casque audio       |59.99  |France|
+|9       |Paolo Rossi|Livre Data Science |19.99  |Italie|
+|17      |Jean Dupont|Ordinateur portable|899.99 |France|
++--------+-----------+-------------------+-------+------+
+only showing top 5 rows
+
+
+🔄 Applying silver transformations...
+
+📊 Creating aggregated view for analytics...
+
+💾 Writing cleaned transactions to: /tmp/delta/silver/ventes_clean
+💾 Writing aggregated view to: /tmp/delta/silver/ventes_aggreges
+💾 Writing top products to: /tmp/delta/silver/top_produits
+
+================================================================================
+✅ VERIFICATION
+================================================================================
+  Cleaned transactions: 100 records
+  Aggregated view: 10 aggregation rows
+
+📋 Sample of cleaned silver data:
++--------+------------+-------------------+-------+---------+-----+----+
+|vente_id|client_nom  |produit_nom        |montant|pays     |annee|mois|
++--------+------------+-------------------+-------+---------+-----+----+
+|3       |Jean Dupont |Ordinateur portable|899.99 |France   |2025 |12  |
+|4       |John Smith  |Ordinateur portable|899.99 |UK       |2025 |12  |
+|6       |Maria Garcia|Ordinateur portable|1799.98|Espagne  |2025 |12  |
+|7       |John Smith  |Clavier mecanique  |150.0  |UK       |2025 |12  |
+|13      |Anna Mueller|Livre Data Science |19.99  |Allemagne|2025 |12  |
++--------+------------+-------------------+-------+---------+-----+----+
+only showing top 5 rows
+
+
+📋 Sample of aggregated data:
++------------+---------+----+-------------+----------------+------------+---------------+--------------------+
+|   categorie|     pays|mois|nombre_ventes|chiffre_affaires|panier_moyen|clients_uniques|        processed_at|
++------------+---------+----+-------------+----------------+------------+---------------+--------------------+
+|       Livre|   Italie|  12|            5|          139.93|       27.99|              1|2025-12-14 07:54:...|
+|Electronique|  Espagne|  12|           10|         6835.37|      683.54|              1|2025-12-14 07:54:...|
+|Electronique|   Italie|  12|           14|          8222.8|      587.34|              1|2025-12-14 07:54:...|
+|       Livre|Allemagne|  12|            4|           199.9|       49.98|              1|2025-12-14 07:54:...|
+|       Livre|       UK|  12|            5|           199.9|       39.98|              1|2025-12-14 07:54:...|
++------------+---------+----+-------------+----------------+------------+---------------+--------------------+
+only showing top 5 rows
+
+
+================================================================================
+🎉 SILVER TRANSFORMATION COMPLETED SUCCESSFULLY
+   • Cleaned 100 → 100 records
+   • Created 10 aggregation rows
+================================================================================
+[2025-12-14T07:55:03.266+0000] {python.py:240} INFO - Done. Returned value was: True
+[2025-12-14T07:55:03.290+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-12-14T07:55:03.291+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=unified_sales_pipeline, task_id=run_silver_processing, run_id=manual__2025-12-14T07:53:42.113803+00:00, execution_date=20251214T075342, start_date=20251214T075424, end_date=20251214T075503
+[2025-12-14T07:55:03.354+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-12-14T07:55:03.381+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-12-14T07:55:03.384+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

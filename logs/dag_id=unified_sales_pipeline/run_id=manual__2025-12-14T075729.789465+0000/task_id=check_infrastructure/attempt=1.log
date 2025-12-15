@@ -1,0 +1,29 @@
+[2025-12-14T07:57:31.607+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-14T07:57:31.626+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: unified_sales_pipeline.check_infrastructure manual__2025-12-14T07:57:29.789465+00:00 [queued]>
+[2025-12-14T07:57:31.635+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: unified_sales_pipeline.check_infrastructure manual__2025-12-14T07:57:29.789465+00:00 [queued]>
+[2025-12-14T07:57:31.638+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 2
+[2025-12-14T07:57:31.650+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): check_infrastructure> on 2025-12-14 07:57:29.789465+00:00
+[2025-12-14T07:57:31.657+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=499) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-14T07:57:31.658+0000] {standard_task_runner.py:72} INFO - Started process 500 to run task
+[2025-12-14T07:57:31.659+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'unified_sales_pipeline', 'check_infrastructure', 'manual__2025-12-14T07:57:29.789465+00:00', '--job-id', '89', '--raw', '--subdir', 'DAGS_FOLDER/unified_sales_pipeline_dag.py', '--cfg-path', '/tmp/tmp9u36vxi8']
+[2025-12-14T07:57:31.660+0000] {standard_task_runner.py:105} INFO - Job 89: Subtask check_infrastructure
+[2025-12-14T07:57:31.698+0000] {task_command.py:467} INFO - Running <TaskInstance: unified_sales_pipeline.check_infrastructure manual__2025-12-14T07:57:29.789465+00:00 [running]> on host 8010d11e18c5
+[2025-12-14T07:57:31.769+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='unified_sales_pipeline' AIRFLOW_CTX_TASK_ID='check_infrastructure' AIRFLOW_CTX_EXECUTION_DATE='2025-12-14T07:57:29.789465+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-14T07:57:29.789465+00:00'
+[2025-12-14T07:57:31.770+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-12-14T07:57:31.782+0000] {logging_mixin.py:190} INFO - 🔍 Checking infrastructure...
+[2025-12-14T07:57:31.784+0000] {conn.py:396} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-2 host=broker2:19093 <connecting> [IPv4 ('172.18.0.5', 19093)]>: connecting to broker2:19093 [('172.18.0.5', 19093) IPv4]
+[2025-12-14T07:57:31.790+0000] {conn.py:618} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-2 host=broker2:19093 <checking_api_versions_recv> [IPv4 ('172.18.0.5', 19093)]>: Broker version identified as 2.6
+[2025-12-14T07:57:31.790+0000] {conn.py:457} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-2 host=broker2:19093 <connected> [IPv4 ('172.18.0.5', 19093)]>: Connection complete.
+[2025-12-14T07:57:31.793+0000] {kafka.py:629} INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+[2025-12-14T07:57:31.793+0000] {conn.py:945} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-2 host=broker2:19093 <connected> [IPv4 ('172.18.0.5', 19093)]>: Closing connection. 
+[2025-12-14T07:57:31.794+0000] {logging_mixin.py:190} INFO - ✅ Kafka brokers are reachable
+[2025-12-14T07:57:31.890+0000] {logging_mixin.py:190} INFO - ✅ Spark master is reachable
+[2025-12-14T07:57:31.891+0000] {logging_mixin.py:190} INFO - ✅ All infrastructure services are ready
+[2025-12-14T07:57:31.891+0000] {python.py:240} INFO - Done. Returned value was: None
+[2025-12-14T07:57:31.898+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-12-14T07:57:31.899+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=unified_sales_pipeline, task_id=check_infrastructure, run_id=manual__2025-12-14T07:57:29.789465+00:00, execution_date=20251214T075729, start_date=20251214T075731, end_date=20251214T075731
+[2025-12-14T07:57:31.954+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-12-14T07:57:31.980+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-12-14T07:57:31.983+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

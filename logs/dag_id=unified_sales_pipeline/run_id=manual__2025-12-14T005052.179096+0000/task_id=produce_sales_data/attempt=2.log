@@ -1,0 +1,86 @@
+[2025-12-15T06:05:16.932+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-15T06:05:16.956+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: unified_sales_pipeline.produce_sales_data manual__2025-12-14T00:50:52.179096+00:00 [queued]>
+[2025-12-15T06:05:16.968+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: unified_sales_pipeline.produce_sales_data manual__2025-12-14T00:50:52.179096+00:00 [queued]>
+[2025-12-15T06:05:16.969+0000] {taskinstance.py:2867} INFO - Starting attempt 2 of 3
+[2025-12-15T06:05:16.982+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): produce_sales_data> on 2025-12-14 00:50:52.179096+00:00
+[2025-12-15T06:05:16.989+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=614) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-15T06:05:16.991+0000] {standard_task_runner.py:72} INFO - Started process 615 to run task
+[2025-12-15T06:05:16.992+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'unified_sales_pipeline', 'produce_sales_data', 'manual__2025-12-14T00:50:52.179096+00:00', '--job-id', '140', '--raw', '--subdir', 'DAGS_FOLDER/unified_sales_pipeline_dag.py', '--cfg-path', '/tmp/tmp5st0xs0a']
+[2025-12-15T06:05:16.993+0000] {standard_task_runner.py:105} INFO - Job 140: Subtask produce_sales_data
+[2025-12-15T06:05:17.037+0000] {task_command.py:467} INFO - Running <TaskInstance: unified_sales_pipeline.produce_sales_data manual__2025-12-14T00:50:52.179096+00:00 [running]> on host f7434449c2ca
+[2025-12-15T06:05:17.124+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='unified_sales_pipeline' AIRFLOW_CTX_TASK_ID='produce_sales_data' AIRFLOW_CTX_EXECUTION_DATE='2025-12-14T00:50:52.179096+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-14T00:50:52.179096+00:00'
+[2025-12-15T06:05:17.125+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-12-15T06:05:17.139+0000] {conn.py:396} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=broker3:19094 <connecting> [IPv4 ('172.18.0.4', 19094)]>: connecting to broker3:19094 [('172.18.0.4', 19094) IPv4]
+[2025-12-15T06:05:17.151+0000] {conn.py:618} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=broker3:19094 <checking_api_versions_recv> [IPv4 ('172.18.0.4', 19094)]>: Broker version identified as 2.6
+[2025-12-15T06:05:17.152+0000] {conn.py:457} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=broker3:19094 <connected> [IPv4 ('172.18.0.4', 19094)]>: Connection complete.
+[2025-12-15T06:05:17.155+0000] {logging_mixin.py:190} INFO - 🚀 Starting Kafka producer...
+[2025-12-15T06:05:17.259+0000] {conn.py:396} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=2 host=broker2:19093 <connecting> [IPv4 ('172.18.0.5', 19093)]>: connecting to broker2:19093 [('172.18.0.5', 19093) IPv4]
+[2025-12-15T06:05:17.261+0000] {conn.py:457} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=2 host=broker2:19093 <connected> [IPv4 ('172.18.0.5', 19093)]>: Connection complete.
+[2025-12-15T06:05:17.262+0000] {conn.py:945} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=broker3:19094 <connected> [IPv4 ('172.18.0.4', 19094)]>: Closing connection. 
+[2025-12-15T06:05:17.265+0000] {logging_mixin.py:190} INFO - ✅ Sale 1: Casque audio - 59.99€
+[2025-12-15T06:05:17.466+0000] {logging_mixin.py:190} INFO - ✅ Sale 2: Casque audio - 59.99€
+[2025-12-15T06:05:17.468+0000] {conn.py:396} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=3 host=broker3:19094 <connecting> [IPv4 ('172.18.0.4', 19094)]>: connecting to broker3:19094 [('172.18.0.4', 19094) IPv4]
+[2025-12-15T06:05:17.469+0000] {conn.py:457} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=3 host=broker3:19094 <connected> [IPv4 ('172.18.0.4', 19094)]>: Connection complete.
+[2025-12-15T06:05:17.668+0000] {logging_mixin.py:190} INFO - ✅ Sale 3: Clavier mecanique - 75.0€
+[2025-12-15T06:05:17.870+0000] {logging_mixin.py:190} INFO - ✅ Sale 4: Livre Data Science - 39.98€
+[2025-12-15T06:05:18.072+0000] {logging_mixin.py:190} INFO - ✅ Sale 5: Clavier mecanique - 225.0€
+[2025-12-15T06:05:18.073+0000] {conn.py:396} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=broker1:19092 <connecting> [IPv4 ('172.18.0.8', 19092)]>: connecting to broker1:19092 [('172.18.0.8', 19092) IPv4]
+[2025-12-15T06:05:18.074+0000] {conn.py:457} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=broker1:19092 <connected> [IPv4 ('172.18.0.8', 19092)]>: Connection complete.
+[2025-12-15T06:05:18.274+0000] {logging_mixin.py:190} INFO - ✅ Sale 6: Casque audio - 59.99€
+[2025-12-15T06:05:18.475+0000] {logging_mixin.py:190} INFO - ✅ Sale 7: Casque audio - 59.99€
+[2025-12-15T06:05:18.681+0000] {logging_mixin.py:190} INFO - ✅ Sale 8: Ordinateur portable - 1799.98€
+[2025-12-15T06:05:18.882+0000] {logging_mixin.py:190} INFO - ✅ Sale 9: Souris sans fil - 25.5€
+[2025-12-15T06:05:19.084+0000] {logging_mixin.py:190} INFO - ✅ Sale 10: Ordinateur portable - 2699.97€
+[2025-12-15T06:05:19.285+0000] {logging_mixin.py:190} INFO - ✅ Sale 11: Ordinateur portable - 1799.98€
+[2025-12-15T06:05:19.487+0000] {logging_mixin.py:190} INFO - ✅ Sale 12: Ordinateur portable - 2699.97€
+[2025-12-15T06:05:19.691+0000] {logging_mixin.py:190} INFO - ✅ Sale 13: Souris sans fil - 76.5€
+[2025-12-15T06:05:19.893+0000] {logging_mixin.py:190} INFO - ✅ Sale 14: Souris sans fil - 25.5€
+[2025-12-15T06:05:20.095+0000] {logging_mixin.py:190} INFO - ✅ Sale 15: Livre Data Science - 19.99€
+[2025-12-15T06:05:20.298+0000] {logging_mixin.py:190} INFO - ✅ Sale 16: Clavier mecanique - 225.0€
+[2025-12-15T06:05:20.500+0000] {logging_mixin.py:190} INFO - ✅ Sale 17: Souris sans fil - 51.0€
+[2025-12-15T06:05:20.702+0000] {logging_mixin.py:190} INFO - ✅ Sale 18: Souris sans fil - 76.5€
+[2025-12-15T06:05:20.904+0000] {logging_mixin.py:190} INFO - ✅ Sale 19: Casque audio - 179.97€
+[2025-12-15T06:05:21.107+0000] {logging_mixin.py:190} INFO - ✅ Sale 20: Livre Data Science - 39.98€
+[2025-12-15T06:05:21.310+0000] {logging_mixin.py:190} INFO - ✅ Sale 21: Souris sans fil - 51.0€
+[2025-12-15T06:05:21.512+0000] {logging_mixin.py:190} INFO - ✅ Sale 22: Casque audio - 119.98€
+[2025-12-15T06:05:21.714+0000] {logging_mixin.py:190} INFO - ✅ Sale 23: Souris sans fil - 76.5€
+[2025-12-15T06:05:21.915+0000] {logging_mixin.py:190} INFO - ✅ Sale 24: Clavier mecanique - 225.0€
+[2025-12-15T06:05:22.117+0000] {logging_mixin.py:190} INFO - ✅ Sale 25: Souris sans fil - 51.0€
+[2025-12-15T06:05:22.320+0000] {logging_mixin.py:190} INFO - ✅ Sale 26: Ordinateur portable - 1799.98€
+[2025-12-15T06:05:22.521+0000] {logging_mixin.py:190} INFO - ✅ Sale 27: Livre Data Science - 39.98€
+[2025-12-15T06:05:22.723+0000] {logging_mixin.py:190} INFO - ✅ Sale 28: Ordinateur portable - 2699.97€
+[2025-12-15T06:05:22.925+0000] {logging_mixin.py:190} INFO - ✅ Sale 29: Ordinateur portable - 2699.97€
+[2025-12-15T06:05:23.129+0000] {logging_mixin.py:190} INFO - ✅ Sale 30: Casque audio - 179.97€
+[2025-12-15T06:05:23.330+0000] {logging_mixin.py:190} INFO - ✅ Sale 31: Casque audio - 179.97€
+[2025-12-15T06:05:23.532+0000] {logging_mixin.py:190} INFO - ✅ Sale 32: Livre Data Science - 19.99€
+[2025-12-15T06:05:23.734+0000] {logging_mixin.py:190} INFO - ✅ Sale 33: Casque audio - 119.98€
+[2025-12-15T06:05:23.936+0000] {logging_mixin.py:190} INFO - ✅ Sale 34: Clavier mecanique - 225.0€
+[2025-12-15T06:05:24.138+0000] {logging_mixin.py:190} INFO - ✅ Sale 35: Clavier mecanique - 75.0€
+[2025-12-15T06:05:24.339+0000] {logging_mixin.py:190} INFO - ✅ Sale 36: Souris sans fil - 51.0€
+[2025-12-15T06:05:24.541+0000] {logging_mixin.py:190} INFO - ✅ Sale 37: Souris sans fil - 25.5€
+[2025-12-15T06:05:24.743+0000] {logging_mixin.py:190} INFO - ✅ Sale 38: Souris sans fil - 76.5€
+[2025-12-15T06:05:24.945+0000] {logging_mixin.py:190} INFO - ✅ Sale 39: Livre Data Science - 59.97€
+[2025-12-15T06:05:25.147+0000] {logging_mixin.py:190} INFO - ✅ Sale 40: Livre Data Science - 59.97€
+[2025-12-15T06:05:25.349+0000] {logging_mixin.py:190} INFO - ✅ Sale 41: Souris sans fil - 51.0€
+[2025-12-15T06:05:25.551+0000] {logging_mixin.py:190} INFO - ✅ Sale 42: Casque audio - 179.97€
+[2025-12-15T06:05:25.753+0000] {logging_mixin.py:190} INFO - ✅ Sale 43: Livre Data Science - 39.98€
+[2025-12-15T06:05:25.955+0000] {logging_mixin.py:190} INFO - ✅ Sale 44: Souris sans fil - 25.5€
+[2025-12-15T06:05:26.157+0000] {logging_mixin.py:190} INFO - ✅ Sale 45: Ordinateur portable - 899.99€
+[2025-12-15T06:05:26.359+0000] {logging_mixin.py:190} INFO - ✅ Sale 46: Livre Data Science - 19.99€
+[2025-12-15T06:05:26.561+0000] {logging_mixin.py:190} INFO - ✅ Sale 47: Ordinateur portable - 2699.97€
+[2025-12-15T06:05:26.762+0000] {logging_mixin.py:190} INFO - ✅ Sale 48: Ordinateur portable - 899.99€
+[2025-12-15T06:05:26.967+0000] {logging_mixin.py:190} INFO - ✅ Sale 49: Ordinateur portable - 1799.98€
+[2025-12-15T06:05:27.169+0000] {logging_mixin.py:190} INFO - ✅ Sale 50: Casque audio - 59.99€
+[2025-12-15T06:05:27.370+0000] {kafka.py:629} INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+[2025-12-15T06:05:27.372+0000] {conn.py:945} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=2 host=broker2:19093 <connected> [IPv4 ('172.18.0.5', 19093)]>: Closing connection. 
+[2025-12-15T06:05:27.373+0000] {conn.py:945} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=3 host=broker3:19094 <connected> [IPv4 ('172.18.0.4', 19094)]>: Closing connection. 
+[2025-12-15T06:05:27.373+0000] {conn.py:945} INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=broker1:19092 <connected> [IPv4 ('172.18.0.8', 19092)]>: Closing connection. 
+[2025-12-15T06:05:27.375+0000] {logging_mixin.py:190} INFO - ✅ Production completed: 50 sales sent to Kafka topic 'ventes_stream'
+[2025-12-15T06:05:27.377+0000] {python.py:240} INFO - Done. Returned value was: None
+[2025-12-15T06:05:27.389+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-12-15T06:05:27.390+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=unified_sales_pipeline, task_id=produce_sales_data, run_id=manual__2025-12-14T00:50:52.179096+00:00, execution_date=20251214T005052, start_date=20251215T060516, end_date=20251215T060527
+[2025-12-15T06:05:27.422+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-12-15T06:05:27.452+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-12-15T06:05:27.457+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

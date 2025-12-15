@@ -110,7 +110,7 @@ def main():
             # Write in smaller batches to avoid permission issues
             df_enriched.write \
                 .format("delta") \
-                .mode("append") \
+                .mode("overwrite") \
                 .save(bronze_path)
             
             print(f"✅ Successfully wrote {message_count} records to Bronze layer!")

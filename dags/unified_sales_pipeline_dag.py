@@ -192,7 +192,7 @@ def check_bronze_data_exists():
 def run_spark_silver_processing():
     """Run Spark job to process Bronze to Silver layer"""
     
-    spark_script = '/app/dags/streaming_silver.py'
+    spark_script = '/app/dags/bronze_to_silver.py'
     
     cmd = [
         'docker', 'exec', 'spark-master',
@@ -213,17 +213,24 @@ def run_spark_silver_processing():
             cmd,
             capture_output=True,
             text=True,
-            timeout=180  # 3 minutes timeout
+            timeout=300  # Increased to 5 minutes
         )
+        
+        # ALWAYS log outputs for debugging - even on failure
+        print(f"🔍 Return code: {result.returncode}")
+        if result.stdout:
+            print(f"STDOUT (first 2000 chars):\n{result.stdout[:2000]}")
+        if result.stderr:
+            print(f"STDERR (first 2000 chars):\n{result.stderr[:2000]}")
         
         if result.returncode == 0:
             print("✅ Silver Spark job completed successfully")
-            print("STDOUT:", result.stdout)
             return True
         else:
+            # Try to extract the actual error
+            error_output = result.stderr if result.stderr else result.stdout
             print(f"❌ Silver Spark job failed with return code {result.returncode}")
-            print("STDERR:", result.stderr)
-            raise Exception(f"Silver Spark job failed: {result.stderr}")
+            raise Exception(f"Silver Spark job failed:\n{error_output[:2000]}")
             
     except subprocess.TimeoutExpired:
         print("❌ Silver Spark job timed out")
@@ -232,6 +239,7 @@ def run_spark_silver_processing():
         print(f"❌ Error submitting Silver Spark job: {e}")
         raise
 
+    
 def verify_final_output():
     """Verify that both Bronze and Silver layers were created successfully"""
     bronze_path = "/tmp/delta/bronze/ventes_stream"
