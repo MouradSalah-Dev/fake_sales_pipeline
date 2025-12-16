@@ -1,0 +1,71 @@
+[2025-12-16T03:04:54.603+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-16T03:04:54.620+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: unified_sales_pipeline.run_silver_processing manual__2025-12-16T03:04:12.084554+00:00 [queued]>
+[2025-12-16T03:04:54.630+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: unified_sales_pipeline.run_silver_processing manual__2025-12-16T03:04:12.084554+00:00 [queued]>
+[2025-12-16T03:04:54.631+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 2
+[2025-12-16T03:04:54.644+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): run_silver_processing> on 2025-12-16 03:04:12.084554+00:00
+[2025-12-16T03:04:54.651+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=234) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-16T03:04:54.653+0000] {standard_task_runner.py:72} INFO - Started process 235 to run task
+[2025-12-16T03:04:54.653+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'unified_sales_pipeline', 'run_silver_processing', 'manual__2025-12-16T03:04:12.084554+00:00', '--job-id', '76', '--raw', '--subdir', 'DAGS_FOLDER/unified_sales_pipeline_dag.py', '--cfg-path', '/tmp/tmps59q4jjr']
+[2025-12-16T03:04:54.654+0000] {standard_task_runner.py:105} INFO - Job 76: Subtask run_silver_processing
+[2025-12-16T03:04:54.688+0000] {task_command.py:467} INFO - Running <TaskInstance: unified_sales_pipeline.run_silver_processing manual__2025-12-16T03:04:12.084554+00:00 [running]> on host 0f62de6a8431
+[2025-12-16T03:04:54.753+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='unified_sales_pipeline' AIRFLOW_CTX_TASK_ID='run_silver_processing' AIRFLOW_CTX_EXECUTION_DATE='2025-12-16T03:04:12.084554+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-16T03:04:12.084554+00:00'
+[2025-12-16T03:04:54.754+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-12-16T03:04:54.767+0000] {logging_mixin.py:190} INFO - 🚀 Submitting Silver Spark job: docker exec spark-master spark-submit --master spark://spark-master:7077 --jars /opt/spark/jars/delta-spark_2.12-3.2.0.jar,/opt/spark/jars/delta-storage-3.2.0.jar,/opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar,/opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar,/opt/spark/jars/kafka-clients-3.4.1.jar,/opt/spark/jars/commons-pool2-2.11.1.jar --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.driver.memory=1g --conf spark.executor.memory=1g /app/dags/bronze_to_silver.py
+[2025-12-16T03:06:01.205+0000] {logging_mixin.py:190} INFO - 🔍 Return code: 0
+[2025-12-16T03:06:01.205+0000] {logging_mixin.py:190} INFO - ================================================================================
+[2025-12-16T03:06:01.206+0000] {logging_mixin.py:190} INFO - STDOUT FULL (last 2000 chars):
+[2025-12-16T03:06:01.207+0000] {logging_mixin.py:190} INFO - ================================================================================
+[2025-12-16T03:06:01.207+0000] {logging_mixin.py:190} INFO - 859.57
+
+Legend: Category | Revenue (€)
+
+================================================================================
+📊 📈 TOP 5 PRODUCTS BY REVENUE
+================================================================================
+Ordinateur portable  | ██████████████████████████████████████████████████ | 33,299.63
+Clavier mecanique    | ████                                               | 3,075.00
+Casque audio         | ████                                               | 2,759.54
+Livre Data Science   | █                                                  | 859.57
+Souris sans fil      | █                                                  | 790.50
+
+Legend: Product | Revenue (€)
+
+================================================================================
+📊 📈 HOURLY SALES DISTRIBUTION
+================================================================================
+Hour 3               | ██████████████████████████████████████████████████ | 40,784.24
+
+Legend: Hour | Revenue (€)
+💾 Written to /tmp/delta/silver/ventes_clean
+💾 Written to /tmp/delta/silver/ventes_aggreges
+💾 Written to /tmp/delta/silver/top_produits
+💾 Written to /tmp/delta/silver/hourly_sales
+
+================================================================================
+📊 FINAL VERIFICATION
+================================================================================
+  Silver Clean              |    100 records | ✅ SUCCESS
+  Aggregated View           |     10 records | ✅ SUCCESS
+  Top Products              |      5 records | ✅ SUCCESS
+  Hourly Sales              |      1 records | ✅ SUCCESS
+
+================================================================================
+⏱ PERFORMANCE METRICS
+================================================================================
+Total execution time : 63.46 seconds
+Bronze          | 100 records
+Silver          | 100 records
+Aggregated      | 10 records
+================================================================================
+
+🔚 Spark session stopped
+[2025-12-16T03:06:01.208+0000] {logging_mixin.py:190} INFO - ================================================================================
+[2025-12-16T03:06:01.208+0000] {logging_mixin.py:190} INFO - ✅ Silver Spark job completed successfully (return code 0)
+[2025-12-16T03:06:01.209+0000] {python.py:240} INFO - Done. Returned value was: True
+[2025-12-16T03:06:01.227+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-12-16T03:06:01.227+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=unified_sales_pipeline, task_id=run_silver_processing, run_id=manual__2025-12-16T03:04:12.084554+00:00, execution_date=20251216T030412, start_date=20251216T030454, end_date=20251216T030601
+[2025-12-16T03:06:01.292+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-12-16T03:06:01.319+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-12-16T03:06:01.322+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

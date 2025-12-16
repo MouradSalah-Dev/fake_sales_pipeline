@@ -9,7 +9,11 @@ RUN pip3 install --no-cache-dir \
     delta-spark==3.2.0 \
     kafka-python \
     pandas \
-    numpy
+    numpy \
+    matplotlib \
+    seaborn
+
+ENV MPLBACKEND=Agg
 
 # CRITICAL FIX: The base image has a 'spark' user but we need to ensure UID 1001 works
 # Create a spark user with UID 1001 if it doesn't exist, or just set the username mapping

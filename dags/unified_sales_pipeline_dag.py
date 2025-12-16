@@ -135,36 +135,76 @@ def run_spark_bronze_processing():
         
         # Always log outputs for debugging
         print(f"🔍 Return code: {result.returncode}")
+        
+        # Show more output for debugging
         if result.stdout:
-            print(f"STDOUT (first 1000 chars):\n{result.stdout[:1000]}")
+            print("="*80)
+            print("STDOUT FULL (last 2000 chars):")
+            print("="*80)
+            print(result.stdout[-2000:])  # Show last 2000 chars
+            print("="*80)
+        
         if result.stderr:
-            print(f"STDERR (first 1000 chars):\n{result.stderr[:1000]}")
+            print("="*80)
+            print("STDERR FULL (last 2000 chars):")
+            print("="*80)
+            print(result.stderr[-2000:])  # Show last 2000 chars
+            print("="*80)
         
-        # Check for REAL errors vs just download messages
-        combined_output = (result.stderr or "") + (result.stdout or "")
+        # Check if the job actually succeeded by looking for success messages
+        combined_output = (result.stdout or "") + (result.stderr or "")
         
-        # Real error indicators
-        real_errors = [
-            "Exception", "ERROR", "error:", "failed", "NoSuchElementException",
-            "ClassNotFound", "connection refused", "timeout", "SocketTimeout"
+        # Check for success indicators
+        success_indicators = [
+            "Bronze processing completed successfully",
+            "Successfully wrote",
+            "Data integrity verified",
+            "Created empty Bronze layer structure"
         ]
         
-        has_real_error = any(error_indicator in combined_output 
-                           for error_indicator in real_errors)
+        # Check for real failure indicators (beyond just warnings)
+        failure_indicators = [
+            "Exception in thread",
+            "ERROR Executor:",
+            "Caused by:",
+            "java.lang.",
+            "py4j.protocol.Py4JJavaError",
+            "Traceback (most recent call last):",
+            "at org.apache.spark"
+        ]
+        
+        has_success = any(indicator in combined_output for indicator in success_indicators)
+        has_real_failure = any(indicator in combined_output for indicator in failure_indicators)
         
         if result.returncode == 0:
-            print("✅ Bronze Spark job completed successfully")
+            print("✅ Bronze Spark job completed successfully (return code 0)")
             return True
-        elif not has_real_error:
-            # No real error found - likely just download messages
-            print(f"⚠️  Spark returned code {result.returncode} but no real error detected")
-            print("✅ Treating as success (likely just package download output)")
+        elif has_success and not has_real_failure:
+            # Job printed success message but had non-zero exit (common with Spark warnings)
+            print(f"⚠️  Spark returned code {result.returncode} but job appears successful")
+            print("✅ Treating as success (likely warnings or cleanup operations)")
             return True
         else:
             # Has real error
-            print(f"❌ Bronze Spark job failed with real error")
-            error_snippet = combined_output[:1500] if len(combined_output) > 1500 else combined_output
-            raise Exception(f"Bronze Spark job failed:\n{error_snippet}")
+            print(f"❌ Bronze Spark job failed")
+            
+            # Extract the actual error from the output
+            error_lines = []
+            lines = combined_output.split('\n')
+            for i, line in enumerate(lines):
+                if any(fail_indicator in line for fail_indicator in failure_indicators):
+                    # Capture error line and context (5 lines before and after)
+                    start = max(0, i - 5)
+                    end = min(len(lines), i + 6)
+                    error_lines.extend(lines[start:end])
+                    error_lines.append("..." if i + 6 < len(lines) else "")
+            
+            if error_lines:
+                error_msg = '\n'.join(error_lines[-50:])  # Last 50 lines of error context
+            else:
+                error_msg = combined_output[-1500:]  # Last 1500 chars if no specific error found
+            
+            raise Exception(f"Bronze Spark job failed:\n{error_msg}")
             
     except subprocess.TimeoutExpired:
         print("❌ Bronze Spark job timed out")
@@ -176,15 +216,31 @@ def run_spark_bronze_processing():
 def check_bronze_data_exists():
     """Check if Bronze layer data exists"""
     bronze_path = "/tmp/delta/bronze/ventes_stream"
+    
+    # First check locally in Airflow container
     if os.path.exists(bronze_path) and os.path.isdir(bronze_path):
         try:
             files = os.listdir(bronze_path)
             has_data = any(f.endswith('.parquet') or f == '_delta_log' for f in files)
             if has_data:
-                print("✅ Bronze data available")
+                print(f"✅ Bronze data available locally at {bronze_path}")
                 return True
         except Exception as e:
             print(f"❌ Error checking bronze data: {e}")
+    
+    # If not found locally, check in Spark container
+    try:
+        print("Checking bronze data in Spark container...")
+        result = subprocess.run([
+            'docker', 'exec', 'spark-master',
+            'bash', '-c', f'ls -la {bronze_path} 2>/dev/null || echo "Directory not found"'
+        ], capture_output=True, text=True)
+        
+        if result.returncode == 0 and '_delta_log' in result.stdout:
+            print(f"✅ Bronze data available in Spark container")
+            return True
+    except Exception as e:
+        print(f"❌ Error checking bronze data in container: {e}")
     
     print("⏳ Waiting for Bronze data...")
     return False
@@ -216,21 +272,71 @@ def run_spark_silver_processing():
             timeout=300  # Increased to 5 minutes
         )
         
-        # ALWAYS log outputs for debugging - even on failure
+        # Show output for debugging
         print(f"🔍 Return code: {result.returncode}")
+        
         if result.stdout:
-            print(f"STDOUT (first 2000 chars):\n{result.stdout[:2000]}")
+            print("="*80)
+            print("STDOUT FULL (last 2000 chars):")
+            print("="*80)
+            print(result.stdout[-2000:])
+            print("="*80)
+        
         if result.stderr:
-            print(f"STDERR (first 2000 chars):\n{result.stderr[:2000]}")
+            print("="*80)
+            print("STDERR FULL (last 2000 chars):")
+            print("="*80)
+            print(result.stderr[-2000:])
+            print("="*80)
+        
+        # Check for success indicators
+        combined_output = (result.stdout or "") + (result.stderr or "")
+        
+        success_indicators = [
+            "SILVER TRANSFORMATION COMPLETED SUCCESSFULLY",
+            "Successfully wrote",
+            "Verification:",
+            "Created empty Silver layer structure"
+        ]
+        
+        failure_indicators = [
+            "Exception in thread",
+            "ERROR Executor:",
+            "Caused by:",
+            "java.lang.",
+            "py4j.protocol.Py4JJavaError",
+            "Traceback (most recent call last):"
+        ]
+        
+        has_success = any(indicator in combined_output for indicator in success_indicators)
+        has_real_failure = any(indicator in combined_output for indicator in failure_indicators)
         
         if result.returncode == 0:
-            print("✅ Silver Spark job completed successfully")
+            print("✅ Silver Spark job completed successfully (return code 0)")
+            return True
+        elif has_success and not has_real_failure:
+            print(f"⚠️  Spark returned code {result.returncode} but job appears successful")
+            print("✅ Treating as success")
             return True
         else:
-            # Try to extract the actual error
-            error_output = result.stderr if result.stderr else result.stdout
             print(f"❌ Silver Spark job failed with return code {result.returncode}")
-            raise Exception(f"Silver Spark job failed:\n{error_output[:2000]}")
+            
+            # Extract error
+            error_lines = []
+            lines = combined_output.split('\n')
+            for i, line in enumerate(lines):
+                if any(fail_indicator in line for fail_indicator in failure_indicators):
+                    start = max(0, i - 5)
+                    end = min(len(lines), i + 6)
+                    error_lines.extend(lines[start:end])
+                    error_lines.append("..." if i + 6 < len(lines) else "")
+            
+            if error_lines:
+                error_msg = '\n'.join(error_lines[-50:])
+            else:
+                error_msg = combined_output[-2000:]
+            
+            raise Exception(f"Silver Spark job failed:\n{error_msg}")
             
     except subprocess.TimeoutExpired:
         print("❌ Silver Spark job timed out")
@@ -245,18 +351,72 @@ def verify_final_output():
     bronze_path = "/tmp/delta/bronze/ventes_stream"
     silver_path = "/tmp/delta/silver/ventes_aggreges"
     
+    print(f"🔍 Verifying output at: {bronze_path}")
+    print(f"🔍 Verifying output at: {silver_path}")
+    
+    # Check locally first
     bronze_exists = os.path.exists(bronze_path) and os.path.isdir(bronze_path)
     silver_exists = os.path.exists(silver_path) and os.path.isdir(silver_path)
     
+    # If not found locally, check in Spark container
+    if not bronze_exists or not silver_exists:
+        print("Checking in Spark container...")
+        try:
+            # Check bronze
+            result = subprocess.run([
+                'docker', 'exec', 'spark-master',
+                'bash', '-c', f'ls -la {bronze_path} 2>/dev/null | head -5'
+            ], capture_output=True, text=True)
+            
+            if result.returncode == 0:
+                bronze_exists = True
+                print(f"✅ Bronze found in container")
+            
+            # Check silver
+            result = subprocess.run([
+                'docker', 'exec', 'spark-master',
+                'bash', '-c', f'ls -la {silver_path} 2>/dev/null | head -5'
+            ], capture_output=True, text=True)
+            
+            if result.returncode == 0:
+                silver_exists = True
+                print(f"✅ Silver found in container")
+                
+        except Exception as e:
+            print(f"⚠️ Error checking container: {e}")
+    
     if bronze_exists:
-        bronze_files = os.listdir(bronze_path)
-        print(f"✅ Bronze layer: {len(bronze_files)} files/folders")
+        try:
+            if os.path.exists(bronze_path):
+                bronze_files = os.listdir(bronze_path)
+            else:
+                # Get from container
+                result = subprocess.run([
+                    'docker', 'exec', 'spark-master',
+                    'bash', '-c', f'ls {bronze_path} 2>/dev/null | wc -l'
+                ], capture_output=True, text=True)
+                bronze_files_count = result.stdout.strip() if result.returncode == 0 else "?"
+                bronze_files = [f"Found {bronze_files_count} files in container"]
+            print(f"✅ Bronze layer: {len(bronze_files)} files/folders")
+        except Exception as e:
+            print(f"⚠️ Error listing bronze: {e}")
     else:
         print("❌ Bronze layer missing")
         
     if silver_exists:
-        silver_files = os.listdir(silver_path)
-        print(f"✅ Silver layer: {len(silver_files)} files/folders")
+        try:
+            if os.path.exists(silver_path):
+                silver_files = os.listdir(silver_path)
+            else:
+                result = subprocess.run([
+                    'docker', 'exec', 'spark-master',
+                    'bash', '-c', f'ls {silver_path} 2>/dev/null | wc -l'
+                ], capture_output=True, text=True)
+                silver_files_count = result.stdout.strip() if result.returncode == 0 else "?"
+                silver_files = [f"Found {silver_files_count} files in container"]
+            print(f"✅ Silver layer: {len(silver_files)} files/folders")
+        except Exception as e:
+            print(f"⚠️ Error listing silver: {e}")
     else:
         print("❌ Silver layer missing")
     
@@ -356,6 +516,3 @@ end_task = DummyOperator(task_id='end_pipeline', dag=dag)
 start_task >> check_infra_task >> produce_data_task >> bronze_processing_task
 bronze_processing_task >> check_bronze_sensor >> silver_processing_task
 silver_processing_task >> verify_output_task >> cleanup_task >> end_task
-
-# Optional: Skip cleanup if you want to keep data
-# silver_processing_task >> verify_output_task >> end_task

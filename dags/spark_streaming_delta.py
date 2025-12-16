@@ -3,6 +3,7 @@ from pyspark.sql.functions import *
 from pyspark.sql.types import *
 import os
 import stat
+import sys
 
 def create_spark_session():
     """Create Spark session with Delta support"""
@@ -38,15 +39,26 @@ def ensure_directory_permissions(path):
         return False
 
 def main():
-    spark = create_spark_session()
-    spark.sparkContext.setLogLevel("WARN")
-
     print("🚀 Starting Kafka to Delta Lake (Bronze Layer)...")
     
-    # Log user info for debugging
-    import getpass
-    print(f"Spark running as user: {getpass.getuser()}")
+    # Log environment info for debugging
+    print(f"Python version: {sys.version}")
     print(f"Current working directory: {os.getcwd()}")
+    
+    # Create Spark session with error handling
+    try:
+        spark = create_spark_session()
+        spark.sparkContext.setLogLevel("WARN")
+        
+        # Log Spark info
+        print(f"Spark version: {spark.version}")
+        print(f"Spark master: {spark.conf.get('spark.master', 'not set')}")
+        
+    except Exception as e:
+        print(f"❌ Failed to create Spark session: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
     
     # Check and fix directory permissions
     bronze_path = "/tmp/delta/bronze/ventes_stream"
@@ -72,6 +84,7 @@ def main():
     ])
 
     try:
+        print("🔌 Connecting to Kafka...")
         # Read from Kafka in BATCH mode
         df_kafka = spark \
             .read \
@@ -105,7 +118,6 @@ def main():
         if message_count > 0:
             # Write to Delta Lake (Bronze layer)
             print(f"📝 Writing to: {bronze_path}")
-            print(f"📝 Directory permissions: {oct(os.stat(bronze_path).st_mode)}")
             
             # Write in smaller batches to avoid permission issues
             df_enriched.write \
@@ -148,6 +160,9 @@ def main():
         raise
     finally:
         spark.stop()
+        print("Spark session stopped")
 
 if __name__ == "__main__":
     main()
+    # Explicit exit with success code
+    sys.exit(0)
