@@ -113,7 +113,7 @@ ENV USER=spark
 USER 1001
 
 # Set working directory
-WORKDIR /opt/spark
+WORKDIR /
 
 # Switch to root to create entrypoint
 USER root

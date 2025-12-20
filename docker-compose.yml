@@ -6,7 +6,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
@@ -322,6 +322,24 @@ services:
       - spark_streaming
     restart: unless-stopped
 
+  flask-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
+    image: atelier_avance_id-spark-image
+    container_name: flask-dashboard
+    hostname: flask-dashboard
+    command: gunicorn -w 4 -b 0.0.0.0:5000 app:app
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./delta:/tmp/delta
+      - ./app/web:/app/web
+    networks:
+      - spark_streaming
+    depends_on:
+      - spark-master
+    restart: unless-stopped
 
 volumes:
   postgres-db-volume:
