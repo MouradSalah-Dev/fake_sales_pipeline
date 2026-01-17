@@ -1,0 +1,1 @@
+Real-time data engineering pipeline with Apache Kafka, Spark, Airflow & Delta Lake. Implements Medallion architecture (Bronze/Silver layers) for sales analytics with streaming ETL, ACID transactions, and Flask dashboard.
