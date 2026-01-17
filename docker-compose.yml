@@ -326,15 +326,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.flask
-    image: atelier_avance_id-spark-image
+    image: flask-dashboard
     container_name: flask-dashboard
-    hostname: flask-dashboard
-    command: gunicorn -w 4 -b 0.0.0.0:5000 app:app
+    hostname: flask-dashboard    
+    user: "1001:1001" 
     ports:
       - "5000:5000"
     volumes:
-      - ./delta:/tmp/delta
+      - ./delta:/tmp/delta 
       - ./app/web:/app/web
+    environment:
+      - JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
     networks:
       - spark_streaming
     depends_on:

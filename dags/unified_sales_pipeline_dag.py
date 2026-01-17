@@ -452,15 +452,6 @@ default_args = {
     'email_on_retry': False,
 }
 
-#dag = DAG(
-#    'unified_sales_pipeline',
-#    default_args=default_args,
-#    description='Unified sales data pipeline: Kafka -> Bronze -> Silver',
-#    schedule_interval=None,
-#    catchup=False,
-#    tags=['sales', 'pipeline', 'kafka', 'spark', 'delta'],
-#    max_active_runs=1,
-#)
 
 dag = DAG(
     'unified_sales_pipeline',

@@ -1,0 +1,15 @@
+# 1. clone projet : 
++) git clone https://github.com/MohamedAmineEllouze/Systeme-de-monitoring-temps-reelle.git
+
+# 2. delete the content of these three folders : 
+-/delta/bronze 
+-/delta/silver 
+N.B : just the content and not the folder 
+
+# 3. build these images :
++) docker build -t custom-airflow:2.10.5 -f Dockerfile.airflow .
++) docker build -t atelier_avance_id-spark-image . 
+# 4. run docker compose with --build to build the flask image , using this commande : 
++) docker-compose up --build -d 
+# 5. finally, stanna chwayya bech les container yerk7ou belbehi w baad get access to the airflow web ui using : 
++) http://localhost:8080 

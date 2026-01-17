@@ -1,0 +1,47 @@
+# 1. Use a slim Python image
+FROM python:3.11-slim
+
+USER root
+
+# 2. Install OpenJDK 21 (Available in Debian Trixie) and curl
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openjdk-21-jre-headless \
+    curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# 3. Set Java Home (Path updated for Java 21)
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+ENV PATH=$PATH:$JAVA_HOME/bin
+
+# 4. Define Spark & Python Paths (Fixes the "UndefinedVar" warnings)
+ENV SPARK_HOME=/usr/local/lib/python3.11/site-packages/pyspark
+ENV PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9.7-src.zip
+
+# 5. Install necessary Python packages
+RUN pip3 install --no-cache-dir \
+    flask \
+    gunicorn \
+    pandas \
+    pyspark==3.5.0 \
+    delta-spark==3.2.0
+
+# 6. Download the Delta Lake JARs
+RUN mkdir -p /opt/spark/jars
+RUN curl -L https://repo1.maven.org/maven2/io/delta/delta-spark_2.12/3.2.0/delta-spark_2.12-3.2.0.jar -o /opt/spark/jars/delta-spark_2.12-3.2.0.jar && \
+    curl -L https://repo1.maven.org/maven2/io/delta/delta-storage/3.2.0/delta-storage-3.2.0.jar -o /opt/spark/jars/delta-storage-3.2.0.jar
+
+# 7. Setup Application directory
+WORKDIR /app
+COPY . .
+
+# Ensure folder for Delta tables exists
+RUN mkdir -p /tmp/delta/silver && chmod -R 777 /tmp/delta
+
+# 8. Run as non-root user
+RUN useradd -u 1001 flaskuser && chown -R flaskuser:flaskuser /app /tmp
+USER 1001
+
+EXPOSE 5000
+
+# Using 1 worker for Spark stability
+CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "--timeout", "120", "web.app:app"]
